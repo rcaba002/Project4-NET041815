@@ -87,6 +87,7 @@ Each game should follow the same process. Games will progress as follows:
 6. **Ask users if they want to continue to play**
 7. **Check Ante money balance for each player and then continue else display error message to eliminate player who do not have enough Ante money.**
 8. **Continue steps 5 to 7 until no one has left Ante money except for one player.**
+
 -------------
 
 #### End the game and repeat.
