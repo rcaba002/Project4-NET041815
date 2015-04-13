@@ -108,6 +108,6 @@ Now that you've built your application, it's up time to test the project using s
 
 Be sure that you've followed unit testing naming conventions throughout!
 
-**Save your `.java` files for your test suite in your `FirstnameLastname` folder in the `com.test` directory. Please label the file as `testsuite`.**
+**Save your test files for your test suite in your `FirstnameLastname` folder in the `com.test` directory. Please label the file as `testsuite`.**
 
 
