@@ -83,10 +83,10 @@ Each game should follow the same process. Games will progress as follows:
 2. **A "dealer" is assigned.** Each round of betting will start with a different player each hand, and will cycle through players as if they were all sitting at the same table. There should be some kind of visual indication which player is the "dealer" at the beginning of each round.
 3. **All players will pay the "ante" value into the "pot" before any cards are dealt.** New player wallet values should be displayed, as should pot size.
 4. **Hands will be dealt.** The human player will have their hand displayed on the screen, while the computer players' hands will remain hidden.
-5. **Display the winner 
-6. **Ask users if they want to continue to play
-7. **Check Ante money balance for each player and then continue else display error message to eliminate player who do not have enough Ante money.
-8. **Continue steps 5 to 7 until no one has left Ante money except for one player.
+5. **Display the winner**
+6. **Ask users if they want to continue to play**
+7. **Check Ante money balance for each player and then continue else display error message to eliminate player who do not have enough Ante money.**
+8. **Continue steps 5 to 7 until no one has left Ante money except for one player.**
 -------------
 
 #### End the game and repeat.
