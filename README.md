@@ -101,7 +101,7 @@ After a game has completed, make sure that you return the user to the first menu
 
 Now that you've built your application, it's up time to test the project using scripts. Your test suite must include the following:
 
-1. **Create a folder named `FirstnameLastname` (with your First Name and Last Name, of course), in the `com.junit` directory.**
+1. **Create a folder named `FirstnameLastname` (with your First Name and Last Name, of course), in the `com.test` directory.**
 2. **A Setup Method for adding a player name.**
 3. **A test script for each method and class.**
 4. **A generalized test suite for running all test cases together.**
