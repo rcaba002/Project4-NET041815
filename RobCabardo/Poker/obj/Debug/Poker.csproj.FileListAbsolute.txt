@@ -4,3 +4,9 @@ C:\Work\Claim\RobCabardo\Poker\bin\Debug\Poker.pdb
 C:\Work\Claim\RobCabardo\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
 C:\Work\Claim\RobCabardo\Poker\obj\Debug\Poker.exe
 C:\Work\Claim\RobCabardo\Poker\obj\Debug\Poker.pdb
+C:\Work\Claim\Project4-NET041815\RobCabardo\Poker\bin\Debug\Poker.exe.config
+C:\Work\Claim\Project4-NET041815\RobCabardo\Poker\obj\Debug\Poker.exe
+C:\Work\Claim\Project4-NET041815\RobCabardo\Poker\obj\Debug\Poker.pdb
+C:\Work\Claim\Project4-NET041815\RobCabardo\Poker\bin\Debug\Poker.exe
+C:\Work\Claim\Project4-NET041815\RobCabardo\Poker\bin\Debug\Poker.pdb
+C:\Work\Claim\Project4-NET041815\RobCabardo\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
