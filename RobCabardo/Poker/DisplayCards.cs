@@ -8,28 +8,28 @@ namespace Poker
 {
     class DisplayCards
     {
-        //displays suit and value of the card
+        // displays suit and value of card
         public static void DisplayCardSuitValue(Card card)
         {
-            char cardSuit = ' ';
+            var cardSuit = ' ';
 
             switch (card.MySuit)
             {
-                case Card.SUIT.HEARTS:
+                case Card.Suit.Hearts:
                     cardSuit = '♥';
                     break;
-                case Card.SUIT.DIAMONDS:
+                case Card.Suit.Diamonds:
                     cardSuit = '♦';
                     break;
-                case Card.SUIT.CLUBS:
+                case Card.Suit.Clubs:
                     cardSuit = '♣';
                     break;
-                case Card.SUIT.SPADES:
+                case Card.Suit.Spades:
                     cardSuit = '♠';
                     break;
             }
 
-            //display the suit and value of the card
+            // display suit and value of card
             if (cardSuit == '♦' || cardSuit == '♥')
             {
                 Console.ForegroundColor = ConsoleColor.Red;

@@ -47,6 +47,8 @@ namespace Poker
                             {
                                 Console.Write("\nPlay again? Y-N ");
                                 selection = Console.ReadLine().ToUpper();
+                                
+                                Console.Clear();
 
                                 if (selection.Equals("Y"))
                                 {

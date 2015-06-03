@@ -8,25 +8,26 @@ namespace Poker
 {
     class DeckOfCards : Card
     {
-        const int NUM_OF_CARDS = 52; //number of all cards
-        private Card[] deck; //array of all playing cards
+        const int NumOfCards = 52; // total number of cards
+        private readonly Card[] _deck; // array of all cards
 
         public DeckOfCards()
         {
-            deck = new Card[NUM_OF_CARDS];
+            _deck = new Card[NumOfCards];
         }
 
-        public Card[] getDeck { get { return deck; } } //get current deck
+        public Card[] GetDeck { get { return _deck; } } // get current deck
 
-        //create deck of 52 cards: 13 Values each, with 4 suits
-        public void setUpDeck()
+        // create deck of 52 cards: 4 suits, 13 Values each
+        public void SetUpDeck()
         {
-            int i = 0;
-            foreach (SUIT s in Enum.GetValues(typeof(SUIT)))
+            var i = 0;
+
+            foreach (Suit s in Enum.GetValues(typeof(Suit)))
             {
-                foreach (VALUE v in Enum.GetValues(typeof(VALUE)))
+                foreach (Value v in Enum.GetValues(typeof(Value)))
                 {
-                    deck[i] = new Card { MySuit = s, MyValue = v };
+                    _deck[i] = new Card { MySuit = s, MyValue = v };
                     i++;
                 }
             }
@@ -34,22 +35,21 @@ namespace Poker
             ShuffleCards();
         }
 
-        //shuffle the deck
+        // shuffle deck
         public void ShuffleCards()
         {
-            Random rand = new Random();
-            Card temp;
+            var rand = new Random();
 
-            //run the shuffle 1000 times
-            for (int shuffleTimes = 0; shuffleTimes < 1000; shuffleTimes++)
+            // run shuffle one thousand times
+            for (var shuffleTimes = 0; shuffleTimes < 1000; shuffleTimes++)
             {
-                for (int i = 0; i < NUM_OF_CARDS; i++)
+                for (var i = 0; i < NumOfCards; i++)
                 {
-                    //swap the cards
-                    int secondCardIndex = rand.Next(13);
-                    temp = deck[i];
-                    deck[i] = deck[secondCardIndex];
-                    deck[secondCardIndex] = temp;
+                    // swap cards
+                    var secondCardIndex = rand.Next(13);
+                    var temp = _deck[i];
+                    _deck[i] = _deck[secondCardIndex];
+                    _deck[secondCardIndex] = temp;
                 }
             }
         }

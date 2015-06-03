@@ -8,22 +8,22 @@ namespace Poker
 {
     class Card
     {
-        public enum SUIT
+        public enum Suit
         {
-            HEARTS,
-            SPADES,
-            DIAMONDS,
-            CLUBS
+            Hearts,
+            Spades,
+            Diamonds,
+            Clubs
         }
 
-        public enum VALUE
+        public enum Value
         {
             TWO = 2, THREE, FOUR, FIVE, SIX, SEVEN,
             EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
         }
 
         //properties
-        public SUIT MySuit { get; set; }
-        public VALUE MyValue { get; set; }
+        public Suit MySuit { get; set; }
+        public Value MyValue { get; set; }
     }
 }

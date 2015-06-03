@@ -8,76 +8,75 @@ namespace Poker
 {
     class DealCards : DeckOfCards
     {
-        private Card[] playerHand;
-        private Card[] computerHand;
-        private Card[] sortedPlayerHand;
-        private Card[] sortedComputerHand;
-        private List<Card[]> allComputerHands;
-        public List<Card[]> allSortedComputerHands; 
+        private readonly Card[] _playerHand;
+        private Card[] _computerHand;
+        private readonly Card[] _sortedPlayerHand;
+        private Card[] _sortedComputerHand;
+        private readonly List<Card[]> _allComputerHands;
+        private readonly List<Card[]> _allSortedComputerHands; 
 
         public DealCards()
         {
-            playerHand = new Card[5];
-            sortedPlayerHand = new Card[5];
+            _playerHand = new Card[5];
+            _sortedPlayerHand = new Card[5];
 
-            allComputerHands = new List<Card[]>();
-            allSortedComputerHands = new List<Card[]>();
+            _allComputerHands = new List<Card[]>();
+            _allSortedComputerHands = new List<Card[]>();
         }
 
         public void Deal(string playerName, int numberPlayers)
         {
-            setUpDeck(); //create the deck of cards and shuffle them
-            getHand(numberPlayers);
-            sortCards(numberPlayers);
-            displayCards(playerName);
-            evaluateHands(playerName);
-            allComputerHands.Clear();
-            allSortedComputerHands.Clear();
+            SetUpDeck(); // create deck and shuffle
+            GetHand(numberPlayers);
+            SortCards();
+            DisplayCards(playerName);
+            EvaluateHands(playerName);
+
+            _allComputerHands.Clear();
+            _allSortedComputerHands.Clear();
         }
 
-        public void getHand(int numComputerHands)
+        public void GetHand(int numComputerHands)
         {
-            //5 cards for the player
+            // 5 cards for player
             for (int i = 0; i < 5; i++)
-                playerHand[i] = getDeck[i];
+                _playerHand[i] = GetDeck[i];
 
-            int p = 5;
+            var p = 5;
 
-            for (int j = 1; j < numComputerHands; j++)
+            for (var j = 1; j < numComputerHands; j++)
             {
-                computerHand = new Card[5];
+                _computerHand = new Card[5];
 
-                int i = 0;
-                //5 cards for the computer
+                var i = 0;
+                // 5 cards for computer
                 while (i < 5)
                 {
-                    computerHand[i] = getDeck[p];
+                    _computerHand[i] = GetDeck[p];
                     p++;
                     i++;
                 }
 
-                allComputerHands.Add(computerHand);
+                _allComputerHands.Add(_computerHand);
             }
         }
 
-        public void sortCards(int numComputerHands)
+        public void SortCards()
         {
-            var queryPlayer = from hand in playerHand
+            var queryPlayer = from hand in _playerHand
                               orderby hand.MyValue
                               select hand;
 
             var index = 0;
             foreach (var element in queryPlayer.ToList())
             {
-                sortedPlayerHand[index] = element;
+                _sortedPlayerHand[index] = element;
                 index++;
             }
 
-            int m = 0;
-
-            foreach (Card[] x in allComputerHands)
+            foreach (var x in _allComputerHands)
             {
-                sortedComputerHand = new Card[5];
+                _sortedComputerHand = new Card[5];
 
                 var queryComputer = from hand in x
                                     orderby hand.MyValue
@@ -86,86 +85,56 @@ namespace Poker
                 index = 0;
                 foreach (var element in queryComputer.ToList())
                 {
-                    sortedComputerHand[index] = element;
+                    _sortedComputerHand[index] = element;
                     index++;
                 }
 
-                allSortedComputerHands.Insert(m, sortedComputerHand);
-                m++;
+                _allSortedComputerHands.Add(_sortedComputerHand);
             }
         }
 
-        public void displayCards(string playerName)
+        public void DisplayCards(string playerName)
         {
             Console.Clear();
 
-            //display player hand
+            // display player hand
             Console.WriteLine(playerName + "'S HAND");
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
-                DisplayCards.DisplayCardSuitValue(sortedPlayerHand[i]);
+                Poker.DisplayCards.DisplayCardSuitValue(_sortedPlayerHand[i]);
             }
 
-            int d = 1;
-            foreach (Card[] x in allSortedComputerHands)
+            var d = 1;
+            foreach (var x in _allSortedComputerHands)
             {
                 Console.WriteLine("\n\n" + "COMPUTER " + d + "'S HAND");
-                foreach (Card p in x)
+                foreach (var p in x)
                 {
-                    DisplayCards.DisplayCardSuitValue(p);
+                    Poker.DisplayCards.DisplayCardSuitValue(p);
                 }
                 d++;
             }
         }
 
-        public void evaluateHands(string playerName)
+        public void EvaluateHands(string playerName)
         {
-            //create player's evaluation objects (passing SORTED hand to constructor)
-            HandEvaluator playerHandEvaluator = new HandEvaluator(sortedPlayerHand);
+            // create player evaluation objects (passing SORTED hand to constructor)
+            HandEvaluator playerHandEvaluator = new HandEvaluator(_sortedPlayerHand);
             
-            //get the player's hand
-            Hand playerHand = playerHandEvaluator.EvaluateHand();
+            // get player hand
+            var playerhand = playerHandEvaluator.EvaluateHand();
 
-            //display user hand
-            Console.WriteLine("\n\n" + playerName + " has " + playerHand);
+            // display player hand
+            Console.WriteLine("\n\n" + playerName + " has " + playerhand);
 
-            int a = 1;
+            var a = 1;
+            var winner = " ";
 
-            Hand computerHand;
-            string winner = " ";
-
-            foreach (Card[] x in allSortedComputerHands)
+            foreach (var x in _allSortedComputerHands)
             {
-                HandEvaluator computerHandEvaluator = new HandEvaluator(x);
-                computerHand = computerHandEvaluator.EvaluateHand();
-                Console.WriteLine("COMPUTER " + a + " has " + computerHand);
-
-                //evaluate hands
-                if (playerHand > computerHand)
-                {
-                    winner = playerName;
-                }
-                else if (playerHand < computerHand)
-                {
-                    winner = "COMPUTER " + a;
-                }
-                else //if the hands are the same, evaluate the values
-                {
-                    //first evaluate who has higher value of poker hand
-                    if (playerHandEvaluator.HandValues.Total > computerHandEvaluator.HandValues.Total)
-                        winner = playerName;
-                    else if (playerHandEvaluator.HandValues.Total < computerHandEvaluator.HandValues.Total)
-                        winner = "COMPUTER " + a;
-                    //if both hanve the same poker hand (for example, both have a pair of queens), 
-                    //than the player with the next higher card wins
-                    else if (playerHandEvaluator.HandValues.HighCard > computerHandEvaluator.HandValues.HighCard)
-                        winner = playerName;
-                    else if (playerHandEvaluator.HandValues.HighCard < computerHandEvaluator.HandValues.HighCard)
-                        winner = "COMPUTER " + a;
-                    else
-                        winner = " ";
-                }
-
+                var computerHandEvaluator = new HandEvaluator(x);
+                var computerhands = computerHandEvaluator.EvaluateHand();
+                Console.WriteLine("COMPUTER " + a + " has " + computerhands);
                 a++;
             }
 
