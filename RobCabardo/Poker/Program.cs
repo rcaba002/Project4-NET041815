@@ -12,16 +12,17 @@ namespace Poker
     {
         static void Main(string[] args)
         {
+            var theDealer = 0;
             Console.SetWindowSize(65, 25);
             Console.BufferWidth = 65;
             Console.BufferHeight = 25;
 
             Console.Title = "Claim Poker";
 
-            DealCards newhand = new DealCards();
+            var newhand = new DealCards();
 
-            bool quit = false;
-            string userInput = " ";
+            var quit = false;
+            var userInput = " ";
 
             while (!quit)
             {
@@ -31,34 +32,57 @@ namespace Poker
                     Console.WriteLine("X - Exit Program");
                     userInput = Console.ReadLine().ToUpper();
 
+                    Console.Clear();
+
                     if (userInput.Equals("S"))
                     {
                         Console.Write("Player Name: ");
                         string playerName = Console.ReadLine();
                         playerName = playerName.Remove(1).ToUpper() + playerName.Remove(0, 1).ToLower();
 
+                        Console.Write("Number of Players (2-5): ");
+                        var numberPlayers = Convert.ToInt32(Console.ReadLine());
+
+                        Console.Write("Ante size: $");
+                        var anteSize = Convert.ToInt32(Console.ReadLine());
+
+                        Console.Write("Wallet size: $");
+                        var walletSize = Convert.ToDouble(Console.ReadLine());
+
                         while (!quit)
                         {
-                            Console.Write("Number of Players (2-5): ");
-                            int numberPlayers = Convert.ToInt32(Console.ReadLine());
-                            newhand.Deal(playerName, numberPlayers);
+                            if (theDealer == numberPlayers)
+                                theDealer = 0;
 
-                            string selection = " ";
+                            theDealer++;
+
+                            var selection = " ";
                             while (!selection.Equals("Y") && !selection.Equals("N"))
                             {
-                                Console.Write("\nPlay again? Y-N ");
-                                selection = Console.ReadLine().ToUpper();
-                                
-                                Console.Clear();
+                                walletSize = newhand.Deal(playerName, numberPlayers, theDealer, walletSize, anteSize);
 
-                                if (selection.Equals("Y"))
+                                if (walletSize <= 0)
                                 {
-                                    quit = false;
+                                    Console.WriteLine("\nYou have no more money.");
+                                    Console.ReadKey();
+                                    System.Environment.Exit(1);
                                 }
-                                else if (selection.Equals("N"))
-                                    quit = true;
                                 else
-                                    Console.WriteLine("Enter a valid response.");
+                                {
+                                    Console.Write("\nPlay again? Y-N ");
+                                    selection = Console.ReadLine().ToUpper();
+
+                                    Console.Clear();
+
+                                    if (selection.Equals("Y"))
+                                    {
+                                        quit = false;
+                                    }
+                                    else if (selection.Equals("N"))
+                                        quit = true;
+                                    else
+                                        Console.WriteLine("Enter a valid response.");
+                                }
                             }
                         }
                     }

@@ -25,16 +25,19 @@ namespace Poker
             _allSortedComputerHands = new List<Card[]>();
         }
 
-        public void Deal(string playerName, int numberPlayers)
+        public double Deal(string playerName, int numberPlayers, int theDealer, double walletSize, int antesize)
         {
             SetUpDeck(); // create deck and shuffle
             GetHand(numberPlayers);
             SortCards();
-            DisplayCards(playerName);
+            var newWallet = DisplayCardsFaceDown(playerName, theDealer, walletSize, antesize);
+            newWallet = PlaceBets(theDealer, newWallet);
+            DisplayCards(playerName, numberPlayers, theDealer, newWallet);
             EvaluateHands(playerName);
-
             _allComputerHands.Clear();
             _allSortedComputerHands.Clear();
+
+            return newWallet;
         }
 
         public void GetHand(int numComputerHands)
@@ -92,14 +95,119 @@ namespace Poker
 
                 _allSortedComputerHands.Add(_sortedComputerHand);
             }
+
+            Console.Clear();
         }
 
-        public void DisplayCards(string playerName)
+        public double DisplayCardsFaceDown(string playerName, int theDealer, double walletSize, int antesize)
+        {
+            var newWallet = walletSize - antesize;
+
+            if (theDealer == 1)
+            {
+                Console.Write(playerName + "'s Hand");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(" (DEALER)");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(" {0:C0}", newWallet);
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.Write(playerName + "'s Hand");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(" {0:C0}", newWallet);
+                Console.ResetColor();
+            }
+
+            for (var i = 0; i < 5; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("  ?  ");
+                Console.ResetColor();
+                Console.Write(" ");
+            }
+
+            var d = 1;
+            foreach (var x in _allSortedComputerHands)
+            {
+                if (theDealer == d + 1)
+                {
+                    Console.Write("\n\n" + "Computer " + d + "'s Hand");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(" (DEALER)");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" {0:C0}", newWallet);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write("\n\n" + "Computer " + d + "'s Hand");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" {0:C0}", newWallet);
+                    Console.ResetColor();
+                }
+
+                foreach (var p in x)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("  ?  ");
+                    Console.ResetColor();
+                    Console.Write(" ");
+                }
+
+                d++;
+            }
+
+            return newWallet;
+        }
+
+        public double PlaceBets(int theDealer, double walletSize)
+        {
+            double bet = 0;
+
+            if (walletSize <= 0)
+            {
+                Console.WriteLine("\n\nYou have no money to bet.");
+            }
+            else
+            {
+                if (theDealer == 1)
+                {
+                    Console.Write("\n\nHow much do you want to bet? ");
+                    bet = Convert.ToDouble(Console.ReadLine());
+                }
+            }
+
+            var newWallet = walletSize - bet;
+
+            Console.ReadKey();
+            return newWallet;
+        }
+
+        public void DisplayCards(string playerName, int numberPlayers, int theDealer, double newWallet)
         {
             Console.Clear();
 
-            // display player hand
-            Console.WriteLine(playerName + "'s Hand");
+            if (theDealer == 1)
+            {
+                Console.Write(playerName + "'s Hand");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(" (DEALER)");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(" {0:C0}", newWallet);
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.Write(playerName + "'s Hand");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(" {0:C0}", newWallet);
+                Console.ResetColor();
+            }
+
             for (var i = 0; i < 5; i++)
             {
                 Poker.DisplayCards.DisplayCardSuitValue(_sortedPlayerHand[i]);
@@ -108,11 +216,28 @@ namespace Poker
             var d = 1;
             foreach (var x in _allSortedComputerHands)
             {
-                Console.WriteLine("\n\n" + "Computer " + d + "'s Hand");
+                if (theDealer == d + 1)
+                {
+                    Console.Write("\n\n" + "Computer " + d + "'s Hand");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(" (DEALER)");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" {0:C0}", newWallet);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write("\n\n" + "Computer " + d + "'s Hand");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" {0:C0}", newWallet);
+                    Console.ResetColor();
+                }
+
                 foreach (var p in x)
                 {
                     Poker.DisplayCards.DisplayCardSuitValue(p);
                 }
+
                 d++;
             }
         }
