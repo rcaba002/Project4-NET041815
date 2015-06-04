@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace Poker
 {
@@ -98,7 +99,7 @@ namespace Poker
             Console.Clear();
 
             // display player hand
-            Console.WriteLine(playerName + "'S HAND");
+            Console.WriteLine(playerName + "'s Hand");
             for (var i = 0; i < 5; i++)
             {
                 Poker.DisplayCards.DisplayCardSuitValue(_sortedPlayerHand[i]);
@@ -107,7 +108,7 @@ namespace Poker
             var d = 1;
             foreach (var x in _allSortedComputerHands)
             {
-                Console.WriteLine("\n\n" + "COMPUTER " + d + "'S HAND");
+                Console.WriteLine("\n\n" + "Computer " + d + "'s Hand");
                 foreach (var p in x)
                 {
                     Poker.DisplayCards.DisplayCardSuitValue(p);
@@ -128,17 +129,112 @@ namespace Poker
             Console.WriteLine("\n\n" + playerName + " has " + playerhand);
 
             var a = 1;
+
+            var compHand = Hand.Nothing;
+            var compTotal = 0;
+            var compHighCard = 0;
+
+            var compWinner = " ";
             var winner = " ";
 
             foreach (var x in _allSortedComputerHands)
             {
                 var computerHandEvaluator = new HandEvaluator(x);
-                var computerhands = computerHandEvaluator.EvaluateHand();
-                Console.WriteLine("COMPUTER " + a + " has " + computerhands);
+                var computerhand = computerHandEvaluator.EvaluateHand();
+                Console.WriteLine("Computer " + a + " has " + computerhand);
+
+                if (computerhand > compHand)
+                {
+                    compHand = computerhand;
+                    compTotal = computerHandEvaluator.HandValues.Total;
+                    compHighCard = computerHandEvaluator.HandValues.HighCard;
+                    compWinner = string.Format("Computer {0} Wins!", a);
+                }
+                else if (compHand > computerhand)
+                {
+                    compHand = compHand;
+                    compTotal = compTotal;
+                    compHighCard = compHighCard;
+                }
+                else
+                {
+                    if (computerHandEvaluator.HandValues.Total > compTotal)
+                    {
+                        compHand = computerhand;
+                        compTotal = computerHandEvaluator.HandValues.Total;
+                        compHighCard = computerHandEvaluator.HandValues.HighCard;
+                        compWinner = string.Format("Computer {0} Wins!", a);
+                    }
+                    else if (compTotal > computerHandEvaluator.HandValues.Total)
+                    {
+                        compHand = compHand;
+                        compTotal = compTotal;
+                        compHighCard = compHighCard;
+                    }
+                    else
+                    {
+                        if (computerHandEvaluator.HandValues.HighCard > compHighCard)
+                        {
+                            compHand = computerhand;
+                            compTotal = computerHandEvaluator.HandValues.Total;
+                            compHighCard = computerHandEvaluator.HandValues.HighCard;
+                            compWinner = string.Format("Computer {0} Wins!", a);
+                        }
+                        else if (compHighCard > computerHandEvaluator.HandValues.HighCard)
+                        {
+                            compHand = compHand;
+                            compTotal = compTotal;
+                            compHighCard = compHighCard;
+                        }
+                        else // v2.0 will check 2nd highest card
+                        {
+                            compHand = compHand;
+                            compTotal = compTotal;
+                            compHighCard = compHighCard;
+                            compWinner = string.Format("It's a Draw!");
+                        }
+                    }
+                }
+
                 a++;
             }
 
-            Console.WriteLine("\n" + winner + " WINS!");
+            if (playerhand > compHand)
+            {
+                winner = string.Format("{0} Wins!", playerName);
+            }
+            else if (compHand > playerhand)
+            {
+                winner = compWinner;
+            }
+            else
+            {
+                if (playerHandEvaluator.HandValues.Total > compTotal)
+                {
+                    winner = string.Format("{0} Wins!", playerName);
+                }
+                else if (compTotal > playerHandEvaluator.HandValues.Total)
+                {
+                    winner = compWinner;
+                }
+                else
+                {
+                    if (playerHandEvaluator.HandValues.HighCard > compHighCard)
+                    {
+                        winner = string.Format("{0} Wins!", playerName);
+                    }
+                    else if (compHighCard > playerHandEvaluator.HandValues.HighCard)
+                    {
+                        winner = compWinner;
+                    }
+                    else // v2.0 will check 2nd highest card
+                    {
+                        winner = string.Format("It's a Draw!");
+                    }
+                }
+            }
+
+            Console.WriteLine("\n" + winner);
         }
     }
 }

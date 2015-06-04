@@ -34,7 +34,8 @@ namespace Poker
                     if (userInput.Equals("S"))
                     {
                         Console.Write("Player Name: ");
-                        string playerName = Console.ReadLine().ToUpper();
+                        string playerName = Console.ReadLine();
+                        playerName = playerName.Remove(1).ToUpper() + playerName.Remove(0, 1).ToLower();
 
                         while (!quit)
                         {
